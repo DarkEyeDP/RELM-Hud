@@ -795,7 +795,7 @@
     }
 
     async function callGPT(context) {
-        const apiKey = "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";
+        const apiKey = "INSERT_KEY_HERE_BETWEEN_QUOTES";
 
         const prompt = `
             You are a Marine Corps RELMS assistant.

@@ -7,8 +7,8 @@
 // @match        *://tfrs.mceits.usmc.mil/TFRS/Relm/*
 // @icon         https://tfrs.mceits.usmc.mil/favicon.ico
 // @grant        none
-// @updateURL    https://raw.githubusercontent.com/DarkEyeDP/RELM-Hud/main/relm-hud.user.js
-// @downloadURL  https://raw.githubusercontent.com/DarkEyeDP/RELM-Hud/main/relm-hud.user.js
+// @updateURL    https://gist.githubusercontent.com/DarkEyeDP/RELM-Hud/main/relm-hud.user.js
+// @downloadURL  https://gist.githubusercontent.com/DarkEyeDP/RELM-Hud/main/relm-hud.user.js
 // ==/UserScript==
 
 (function () {

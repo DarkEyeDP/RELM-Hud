@@ -4,9 +4,10 @@
 // @version      3.5
 // @description  Smart HUD for RELM automation and autofill
 // @author       Darrick
+// @match        *://tfrs.mceits.usmc.mil/TFRS/Relm/Forward?marineId=*
 // @match        *://tfrs.mceits.usmc.mil/TFRS/Relm/*
-// @icon         https://tfrs.mceits.usmc.mil/favicon.ico
-// @grant        none
+// @grant        GM_addStyle
+// @require      https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js
 // @updateURL    https://raw.githubusercontent.com/DarkEyeDP/RELM-Hud/main/relm-hud.user.js
 // @downloadURL  https://raw.githubusercontent.com/DarkEyeDP/RELM-Hud/main/relm-hud.user.js
 // ==/UserScript==

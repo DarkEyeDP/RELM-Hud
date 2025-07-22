@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         RELM HUD Assistant
 // @namespace    https://github.com/DarkEyeDP
-// @version      3.4
+// @version      3.5
 // @description  Smart HUD for RELM automation and autofill
 // @author       Darrick
 // @match        *://tfrs.mceits.usmc.mil/TFRS/Relm/*

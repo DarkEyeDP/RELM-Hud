@@ -1,12 +1,14 @@
 // ==UserScript==
-// @name         RELM AI Assistant v3.4 - Firefly Edition
-// @namespace    https://your-domain
+// @name         RELM HUD Assistant
+// @namespace    https://github.com/DarkEyeDP
 // @version      3.4
-// @description  Suggest Action Code and Comment for RELM cases (STAP/SEAP only) with firefly button effects
-// @match        *://tfrs.mceits.usmc.mil/TFRS/Relm/Forward?marineId=*
+// @description  Smart HUD for RELM automation and autofill
+// @author       Darrick
 // @match        *://tfrs.mceits.usmc.mil/TFRS/Relm/*
-// @grant        GM_addStyle
-// @require      https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js
+// @icon         https://tfrs.mceits.usmc.mil/favicon.ico
+// @grant        none
+// @updateURL    https://raw.githubusercontent.com/DarkEyeDP/RELM-Hud/main/relm-hud.user.js
+// @downloadURL  https://raw.githubusercontent.com/DarkEyeDP/RELM-Hud/main/relm-hud.user.js
 // ==/UserScript==
 
 (function () {

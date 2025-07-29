@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         RELM HUD Assistant
 // @namespace    https://github.com/DarkEyeDP
-// @version      3.6
+// @version      3.8
 // @description  Smart HUD for RELM automation and autofill
 // @author       Darrick
 // @match        *://tfrs.mceits.usmc.mil/TFRS/Relm/Forward?marineId=*
@@ -887,7 +887,7 @@
         const box = document.createElement("div");
         box.id = "relm-ai-overlay";
         box.innerHTML = `
-      <div class="relm-overlay-title">RELM HUD Module Version 3.0</div>
+      <div class="relm-overlay-title">RELM HUD Module Version 3.8</div>
       <textarea id="relm-ai-editor">${cleanedText}</textarea>
       <div class="relm-checkbox-container">
         <div class="relm-checkbox-wrapper">

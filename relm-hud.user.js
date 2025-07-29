@@ -797,6 +797,10 @@
     async function callGPT(context) {
         const apiKey = "INSERT_KEY_HERE_BETWEEN_QUOTES";
 
+        // Check for jeopardy before making the API call
+        const flags = scanAndFlagIssues();
+        const hasJeopardy = flags.includes("JEP");
+
         const prompt = `
             You are a Marine Corps RELMS assistant.
 
@@ -810,11 +814,11 @@
 
             === COMMENT TEMPLATES ===
 
-            **STAP** — No jeopardy:
-            "No jeopardy on current contract. CO recommends w/ ${context.tier}. FY-26 STAP Marine routed for reenlistment. SNM meets height & weight standards. PFT and CFT are current. SNM has no fitness report date gaps. SNM has a current security clearance."
+            **STAP** — ${hasJeopardy ? 'With jeopardy' : 'No jeopardy'}:
+            "${hasJeopardy ? 'Jeopardy on current contract.' : 'No jeopardy on current contract.'} CO recommends w/ ${context.tier}. FY-26 STAP Marine routed for reenlistment. SNM meets height & weight standards. PFT and CFT are current. SNM has no fitness report date gaps. SNM has a current security clearance."
 
-            **SEAP** — Over 18 YRS:
-            "No jeopardy on current contract. CO recommends w/ ${context.tier}. FY-26 SEAP Marine routed for reenlistment. SNM meets height & weight standards. PFT and CFT are current. SNM has no fitness report date gaps. SNM has a current security clearance."
+            **SEAP** — ${hasJeopardy ? 'With jeopardy' : 'No jeopardy'}:
+            "${hasJeopardy ? 'Jeopardy on current contract.' : 'No jeopardy on current contract.'} CO recommends w/ ${context.tier}. FY-26 SEAP Marine routed for reenlistment. SNM meets height & weight standards. PFT and CFT are current. SNM has no fitness report date gaps. SNM has a current security clearance."
 
             === CONTEXT ===
             Tier: ${context.tier}
@@ -824,10 +828,11 @@
             CFT: ${context.CFT}
             CP Comment: ${context.CPComment}
             CO Comment: ${context.COComment}
+            Jeopardy Status: ${hasJeopardy ? 'JEOPARDY PRESENT (JEP flagged)' : 'NO JEOPARDY'}
 
             Respond with:
             Action Code: STAP or SEAP
-            Comment: <Pre-filled forwarding comment with actual month number replacing @@>
+            Comment: <Pre-filled forwarding comment with actual jeopardy status>
         `;
 
         const res = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -839,7 +844,7 @@
             body: JSON.stringify({
                 model: "gpt-4",
                 messages: [
-                    { role: "system", content: "You are a Marine Corps RELMS assistant." },
+                    { role: "system", content: "You are a Marine Corps RELMS assistant. Pay careful attention to jeopardy status when generating comments." },
                     { role: "user", content: prompt },
                 ],
                 temperature: 0.2,

@@ -801,39 +801,54 @@
         const flags = scanAndFlagIssues();
         const hasJeopardy = flags.includes("JEP");
 
+        // Extract fiscal year from the page
+        const fyLabel = document.getElementById("RelmFy");
+        const fiscalYear = fyLabel ? fyLabel.innerText.trim() : "26"; // fallback to FY-26 if not found
+        const fyShort = fiscalYear.slice(-2); // Get last 2 digits (e.g., "27" from "2027")
+
+        // Define action codes and their descriptions
+        const actionCodes = {
+            FTAP: "First Term Marine",
+            STAP: "Careerist Reenlistment under 18 years",
+            SEAP: "Zone E or >18 years or Primary MOS: 8999"
+        };
+
+        // Generate jeopardy status text
+        const jeopardyText = hasJeopardy ? 'Jeopardy on current contract.' : 'No jeopardy on current contract.';
+
+        // Generate comment templates dynamically
+        const commentTemplates = Object.keys(actionCodes).map(code => {
+            return `**${code}** — ${hasJeopardy ? 'With jeopardy' : 'No jeopardy'}:
+        "${jeopardyText} CO recommends w/ ${context.tier}. FY-${fyShort} ${code} Marine routed for reenlistment. SNM meets height & weight standards. PFT and CFT are current. SNM has no fitness report date gaps. SNM has a current security clearance."`;
+        }).join('\n\n');
+
         const prompt = `
-            You are a Marine Corps RELMS assistant.
+        You are a Marine Corps RELMS assistant.
 
-            Based on the data below, determine if the request is a STAP (Careerist Reenlistment under 18 years) or SEAP (Zone E or >18 years), then suggest the correct action code and generate the appropriate forwarding comment.
+        Based on the data below, determine if the request is a ${Object.entries(actionCodes).map(([code, desc]) => `${code} (${desc})`).join(', ')}, then suggest the correct action code and generate the appropriate forwarding comment.
 
-            Use only these options:
+        Use only these options:
 
-            === ACTION CODES ===
-            - STAP — Standard reenlistment approval
-            - SEAP — Standard reenlistment approval (for over 18 years or Zone E/Primary MOS: 8999)
+        === ACTION CODES ===
+        ${Object.entries(actionCodes).map(([code, desc]) => `- ${code} — ${desc}`).join('\n        ')}
 
-            === COMMENT TEMPLATES ===
+        === COMMENT TEMPLATES ===
+        ${commentTemplates}
 
-            **STAP** — ${hasJeopardy ? 'With jeopardy' : 'No jeopardy'}:
-            "${hasJeopardy ? 'Jeopardy on current contract.' : 'No jeopardy on current contract.'} CO recommends w/ ${context.tier}. FY-26 STAP Marine routed for reenlistment. SNM meets height & weight standards. PFT and CFT are current. SNM has no fitness report date gaps. SNM has a current security clearance."
+        === CONTEXT ===
+        Tier: ${context.tier}
+        Total Service: ${context.serviceTime}
+        Months Requested: ${context.monthsRequested}
+        PFT: ${context.PFT}
+        CFT: ${context.CFT}
+        CP Comment: ${context.CPComment}
+        CO Comment: ${context.COComment}
+        Jeopardy Status: ${hasJeopardy ? 'JEOPARDY PRESENT (JEP flagged)' : 'NO JEOPARDY'}
 
-            **SEAP** — ${hasJeopardy ? 'With jeopardy' : 'No jeopardy'}:
-            "${hasJeopardy ? 'Jeopardy on current contract.' : 'No jeopardy on current contract.'} CO recommends w/ ${context.tier}. FY-26 SEAP Marine routed for reenlistment. SNM meets height & weight standards. PFT and CFT are current. SNM has no fitness report date gaps. SNM has a current security clearance."
-
-            === CONTEXT ===
-            Tier: ${context.tier}
-            Total Service: ${context.serviceTime}
-            Months Requested: ${context.monthsRequested}
-            PFT: ${context.PFT}
-            CFT: ${context.CFT}
-            CP Comment: ${context.CPComment}
-            CO Comment: ${context.COComment}
-            Jeopardy Status: ${hasJeopardy ? 'JEOPARDY PRESENT (JEP flagged)' : 'NO JEOPARDY'}
-
-            Respond with:
-            Action Code: STAP or SEAP
-            Comment: <Pre-filled forwarding comment with actual jeopardy status>
-        `;
+        Respond with:
+        Action Code: ${Object.keys(actionCodes).join(' or ')}
+        Comment: <Pre-filled forwarding comment with actual jeopardy status>
+    `;
 
         const res = await fetch("https://api.openai.com/v1/chat/completions", {
             method: "POST",
